@@ -1,7 +1,7 @@
-#include<stdlib.h>
-#include<string.h>
-#include<unistd.h>
-#include<stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <stdio.h>
 
 
 double getCPUStat(){
@@ -77,10 +77,4 @@ double memStat(){
     	return memUsage;
 
     }
-}
-
-int main(int argC,char* argV[]){
-	getCPUStat();
-	memStat();
-	return 0;
 }
