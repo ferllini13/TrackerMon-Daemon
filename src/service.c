@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h> // Access to POSIX API
+#include <unistd.h>    // Access to POSIX API
 #include <sys/types.h> // Used for unmask.
 #include <sys/stat.h>
-#include <signal.h> // Handlers for signals reported during execution.
-#include <syslog.h> // Definitions for system error logging.
-#include <errno.h>  // Macros for reporting and retrieving error conditions.
+#include <signal.h>    // Handlers for signals reported during execution.
+#include <syslog.h>    // Definitions for system error logging.
+#include <errno.h>     // Macros for reporting and retrieving error conditions.
 #include <string.h>
 
-static void daemonize() {
+void daemonize() {
     pid_t pid; // Process ID and Session ID.
 
     // First fork: Child runs in the background, parent gets terminated.
