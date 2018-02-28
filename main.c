@@ -2,6 +2,7 @@
 
 int main(int argC,char* argV[]){
 	getCPUStat();
-	memStat();
+	getMemStat();
+	getSynStat();
 	return 0;
 }
