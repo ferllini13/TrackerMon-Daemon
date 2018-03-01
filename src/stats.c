@@ -2,79 +2,108 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <sys/types.h>
 
-
+//return CPU usage
 double getCPUStat(){
-	FILE* file = fopen("/proc/stat","r"); 
+	FILE* file = fopen("/proc/stat","r"); // open the file with CPU info (stat)
 
-	if(file == NULL){ 
-		printf("Error: cant open file\n");
-		return -1;
+
+	if(file == NULL){ // if file cant be opened
+		printf("Error: can't open file\n");// print error
+		fclose(file);// close file
+		return -1;// return error
 	}
 	else{
 
-		char line[100];
-		char* token;
-		int i = 0;
-		double sum = 0;
-		double idle = 0;
-		fgets(line,100,file);
-		fclose(file);
-		token = strtok(line," ");
+		char line[100];// will load a line of memeinfo
+		char* token;//will load a lime element
+		int i = 0; //index to iterate in line
+		double total = 0; // will load the total of CPU capacity
+		double idle = 0; // will load the CPU available(idle)
+		fgets(line,100,file);//load first line
+		fclose(file);// close file after read
+		token = strtok(line," ");// load a line element 
 		
 		while(token!=NULL){
-			token = strtok(NULL," ");
-			if(token!=NULL){
-				sum += atof(token);
-				if(i==3)
-					idle = atof(token);
-				i++;
+			token = strtok(NULL," ");// eliminate line description
+			if(token!=NULL){ // if isnt null
+				total += atof(token);// add to the total
+				if(i==3) // to get the iddle wich is in the third position
+					idle = atof(token);// cast to double and assign to idle
+				i++;// incrementes the index
 			}				
 		}	
-		float cpuUsage= (1-(idle/sum))*100;
+		double cpuUsage= (1-(idle/total))*100;// calculate the CPU usage
 		printf("%f %s\n",cpuUsage,"%");
-		return cpuUsage;	
+		return cpuUsage;// return the result
 	}  
 }
  
 
-double memStat(){
 
-	
+//return memory usage
+double getMemStat(){
 	FILE *file = fopen ("/proc/meminfo", "r");
 
-    if (file == NULL){
-    			printf("Error: cant open file\n");
-    	fclose(file);	
-    	return -1;
+    if (file == NULL){// if file cant be opened
+    	printf("Error: canit open file\n");// print error
+    	fclose(file);// close file
+    	return -1;// return error
     }
     else{
-    	double mem;
-		double memAvailable;
-    	char line[100];
-    	int i = 0;
-    	int j = 0;
-    	char* token;
+    	double memTotal;// will total of memory
+		double memFree;// will free memory
+    	char line[100];// will load a line of memeinfo
+    	int i = 0; // index to iterate in lines
+    	int j = 0; //index to iterate in line
+    	char* token; //will load a lime element
     	while(i<2){
-    	 	fgets(line, sizeof(line), file);
-    	 	token = strtok(line," ");
+    	 	fgets(line, sizeof(line), file);// load a line
+    	 	token = strtok(line," "); // load a line element
     	 	while(token!=NULL && j< 4){          
-				token = strtok(NULL," ");
+				token = strtok(NULL," ");// eliminate line description
 				if (j == 0){
-					mem = atof(token);
+					memTotal = atof(token); // cast token to double and assign memTotal
 				}
 				if (j == 3){
-					memAvailable = atof(token); 
-				}
-				j++;	
+					memFree = atof(token);// cast token to double and assign memTotal
+				} 
+				j++;// incrementes index
 			}
-            i++;
+		i++;//incremet index
+
     	} 
 
     	fclose(file);
-    	double memUsage=100*(mem- memAvailable)/mem;
+    	double memUsage=100*(memTotal- memFree)/memTotal;//calculate the percent
     	printf("%f %s\n",memUsage,"%");
-    	return memUsage;
+    	return memUsage;// retrurn the result
 
     }
 }
+
+// return the number of SYN_RECV
+int getSynStat(){
+
+   system("netstat -tuna | grep -c SYN_RECV > /home/ferllini13/tmd"); // call a system comanand and meke a log with number of syn_recv
+	
+   	FILE *file = fopen ("/home/ferllini13/tmd", "r");//open the file with syn information
+
+    if (file == NULL){// if file cant be opened
+    	printf("Error: can't open file\n");// print error
+    	fclose(file);// close file
+    	return -1;// return error
+    }
+    else{
+    	char line[100];// will load a line of tmd
+    	fgets(line, sizeof(line), file);// load a line
+
+    	fclose(file);// close file after read
+    	int synRecv = atof(line);// cast line to int and assing to sysRecv
+    	printf("%d\n",synRecv);
+  
+  		return synRecv;// return the result
+  	} 
+}
+

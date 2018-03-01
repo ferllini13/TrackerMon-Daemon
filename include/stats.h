@@ -2,6 +2,7 @@
 #define _STATS_H
 
 double getCPUStat();
-double memStat();
+double getMemStat();
+int getSynStat();
 
 #endif

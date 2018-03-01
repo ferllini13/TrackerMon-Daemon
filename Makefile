@@ -3,6 +3,7 @@ CFLAGS = -Wall -c
 LFLAGS = -Wall
 OBJS = main.o service.o stats.o
 
+
 trackermon: $(OBJS)
 	$(CC) $(LFLAGS) $(OBJS) -o ./bin/trackermon
 	rm *.o
