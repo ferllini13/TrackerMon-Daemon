@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -c
 LFLAGS = -Wall
-OBJS = stats.o main.o
+OBJS = stats.o main.o File.o
 
 
 trackermon: $(OBJS)
@@ -11,8 +11,11 @@ trackermon: $(OBJS)
 stats.o: 
 	$(CC) $(CFLAGS) ./src/stats.c 
 
-main.o: stats.o 
+main.o: stats.o File.o
 	$(CC) $(CFLAGS) main.c
+
+File.o: 
+	$(CC) $(CFLAGS) ./src/File.c
 
 clean:
 	rm -f ./bin/trackermon

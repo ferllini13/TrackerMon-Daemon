@@ -2,6 +2,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
+#include "../include/File.h"
 
 //return CPU usage
 double getCPUStat(){
@@ -106,7 +107,7 @@ int getSynStat(){
 
 
 //gest the critical messages from syslog
-void getSyslogStat(int * criticalCount){
+void getSyslogStat(int * criticalCount , char*logfile){
 	FILE *file = popen ("cat /var/log/syslog | grep CRITICAL", "r");//load  the command output with syn information
 
     if (file==NULL){// if file cant be opened
@@ -135,25 +136,27 @@ void getSyslogStat(int * criticalCount){
 
 
 
-void checkCpu(double cpuThreshold){
+void checkCpu(double cpuThreshold, char*logfile){
 	double cpuUsage=getCPUStat();
 
 	if (cpuUsage>cpuThreshold){
-		// wtrite log
+		double *type=0;
+		writeLog(type,&cpuUsage,&cpuThreshold,NULL,logfile);
 	}
 }		
 
 
-void checkMem(double memThreshold){
+void checkMem(double memThreshold, char*logfile){
 	double memUsage=getMemStat();
-	if (memUsage>memThreshold){
-		//wtrite log
+	if (memUsage>*memThreshold){
+		double *type=2;
+		writeLog(type,&memUsage,&memThreshold,NULL,logfile);
 	}	
 }
 
-void checkSyn(int synThreshold){
+void checkSyn(int synThreshold, char*logfile){
 	int synRecv=getSynStat();
-	if (synRecv>synThreshold){
-		//wtrite logc
+	if (synRecv > synThreshold){
+		writeLog(type,&synRecv,&synThreshold,NULL,logfile);
 	}
 }

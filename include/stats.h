@@ -6,7 +6,7 @@ double getMemStat();
 int getSynStat();
 void getSyslogStat(int * criticalCount);
 
-void checkCpu();
-void checkMem();
-void checkSyn();
+void checkCpu(double *cpuThreshold, char*logfile);
+void checkMem(double memThreshold, char*logfile);
+void checkSyn(int synThreshold, char*logfile);
 #endif
