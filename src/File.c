@@ -2,41 +2,46 @@
 #include <stdlib.h>
 #include <string.h>
 
+/**
+ * @brief Method that write a log file
+ * @details This method writes in the log file the different kind of alert messages
+ * 
+ * @param pType         Recieve the type of alert 0=CPU 1=Memory 2=SYN 3=System
+ * @param pCurrentInfo  Recieve the current value for the alert
+ * @param pThreshold    Recieve the threshold
+ * @param pSystemError  Recieve the System Error
+ * @param pLogFile      Recieve the Log File path
+ */
 void writeLog(int pType, double * pCurrentInfo, double * pThreshold, char * pSystemError, char * pLogFile){ //Recieve the information and logfile path
-    FILE * pFile = fopen(pLogFile, "a+"); //a+ read the file and append the info, the file is created if the file doesn't exist 
-    if (pFile == NULL)
+    FILE * pFile = fopen(pLogFile, "a"); //a read the file and append the info
+    if (pFile == NULL) //Verify if the file is open
     {
             printf("Error opening file!\n");
             
     }
     else
     {
-
-        switch(pType) 
+        switch(pType) // Type of alert 0=CPU 1=Memory 2=SYN 3=System
         {
             case 0  : //CPU
-                fprintf(pFile, "[CRITICAL] – CPU Usage is currently %f which is over %f\n", *pCurrentInfo, *pThreshold);
-                fclose(pFile);
+                fprintf(pFile, "[CRITICAL] – CPU Usage is currently %f which is over %f\n", *pCurrentInfo, *pThreshold); // Write the alert message in the log file
+                fclose(pFile); // Close the file
                 break;
         
             case 1  : //Memory
-                fprintf(pFile, "[CRITICAL] – Memory Usage is currently %f which is over %f\n", *pCurrentInfo, *pThreshold);
-                fclose(pFile);
+                fprintf(pFile, "[CRITICAL] – Memory Usage is currently %f which is over %f\n", *pCurrentInfo, *pThreshold); // Write the alert message in the log file
+                fclose(pFile); // Close the file
                 break;
         
             case 2  : //SYN
-                fprintf(pFile, "[CRITICAL] – SYN flood connections detected. Currently there are %f active SYN_RECV connections which is over the defined limit %f\n", *pCurrentInfo, *pThreshold);
-                fclose(pFile);
+                fprintf(pFile, "[CRITICAL] – SYN flood connections detected. Currently there are %f active SYN_RECV connections which is over the defined limit %f\n", *pCurrentInfo, *pThreshold); // Write the alert message in the log file
+                fclose(pFile); // Close the file
                 break;
         
             case 3  : //System critical errors
-                fprintf(pFile, "[CRITICAL] – System critical error has been detected: %s\n", pSystemError);
-                fclose(pFile);
+                fprintf(pFile, "[CRITICAL] – System critical error has been detected: %s\n", pSystemError); // Write the system error in the log file
+                fclose(pFile); // Close the file
                 break;
-      
-            // /* you can have any number of case statements */
-            // default : /* Optional */
-            //     statement(s);
         }
     }    
 }
@@ -52,7 +57,7 @@ void writeLog(int pType, double * pCurrentInfo, double * pThreshold, char * pSys
  * 
  * @param pfilename name of the config file to read
  */
-void readConfigFile(float * pCPU, float * pMEM, float * pSYNN, char * plogFilePath){
+void readConfigFile(double * pCPU, double * pMEM, double * pSYNN, char * pLogFilePath){
     FILE * fp;    
 
     fp = fopen(CONFIG_FILE_NAME, "r");
@@ -74,16 +79,16 @@ void readConfigFile(float * pCPU, float * pMEM, float * pSYNN, char * plogFilePa
                 sscanf(line, "%s = %s", key, value);
                 if(strcmp(key, "LOGFILE") == 0){       //Identify the LOGFILE path
                     if(strcmp(value,"") == 0){
-                        strncpy(plogFilePath,"/var/log/messages", 255);
+                        strncpy(pLogFilePath,"/var/log/messages", 255);
                     } else {
-                        strncpy(plogFilePath,value, 255);                    
+                        strncpy(pLogFilePath,value, 255);                    
                     }
                 } else if(strcmp(key, "CPUthreshold") == 0){  //Read the CPUthreshold
-                    sscanf(value, "%f", &(*pCPU));
+                    sscanf(value, "%lf", &(*pCPU));
                 } else if(strcmp(key, "MEMthreshold") == 0){  //Read the Memthreshold
-                    sscanf(value, "%f", &(*pMEM));
+                    sscanf(value, "%lf", &(*pMEM));
                 } else if(strcmp(key, "SYNthreshold") == 0){  //Read the SYNthreshold
-                    sscanf(value, "%f", &(*pSYNN));
+                    sscanf(value, "%lf", &(*pSYNN));
                 }
             }
         }
@@ -104,7 +109,7 @@ int main(){
     writeLog(type, &currentInfo, &threshold, systemError, logFile);
     
     //READCONF
-    float CPU_TRESHOLD = 0, MEM_TRESHOLD = 0, SYNNCONN_TRESHOLD = 0;
+    double CPU_TRESHOLD = 0, MEM_TRESHOLD = 0, SYNNCONN_TRESHOLD = 0;
     char * logFilePath;
     readConfigFile(&CPU_TRESHOLD, &MEM_TRESHOLD, &SYNNCONN_TRESHOLD, logFilePath); 
     printf("%s\n", logFilePath);      
