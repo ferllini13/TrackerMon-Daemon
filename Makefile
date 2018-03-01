@@ -8,7 +8,7 @@ trackermon: $(OBJS)
 	$(CC) $(LFLAGS) $(OBJS) -o ./bin/trackermon
 	rm *.o
 
-stats.o: 
+stats.o: File.o
 	$(CC) $(CFLAGS) ./src/stats.c 
 
 main.o: stats.o File.o

@@ -84,7 +84,7 @@ double getMemStat(){
 }
 
 // return the number of SYN_RECV
-int getSynStat(){
+double getSynStat(){
 	
    	FILE *file = popen ("netstat -tuna | grep -c SYN_RECV", "r");//load  the command output with syn information
 
@@ -98,8 +98,8 @@ int getSynStat(){
     	fgets(line, sizeof(line), file);// load a line
 
     	fclose(file);// close file after read
-    	int synRecv = atof(line);// cast line to int and assing to sysRecv
-    	printf("%d\n",synRecv);
+    	double synRecv = atof(line);// cast line to int and assing to sysRecv
+    	printf("%f\n",synRecv);
   
   		return synRecv;// return the result
   	} 
@@ -107,7 +107,7 @@ int getSynStat(){
 
 
 //gest the critical messages from syslog
-void getSyslogStat(int * criticalCount , char*logfile){
+void getSyslogStat(int * criticalCount , char* logfile){
 	FILE *file = popen ("cat /var/log/syslog | grep CRITICAL", "r");//load  the command output with syn information
 
     if (file==NULL){// if file cant be opened
@@ -120,27 +120,24 @@ void getSyslogStat(int * criticalCount , char*logfile){
     	char line[500];// will load a line of tmd
     	while(fgets(line, sizeof(line), file)!=NULL){ // run while the line is not null
     		if (count >= * criticalCount){
-    			//write log
+    			int type=3;
+    			writeLog(type,NULL,NULL,(char*)line,logfile);
     			printf("%s\n",line);
     			criticalCount++;
     		}
     		count++;
-    		
     	}
     	fclose(file);// close file after read
-
 	}
 }
-
-
 
 
 
 void checkCpu(double cpuThreshold, char*logfile){
 	double cpuUsage=getCPUStat();
 
-	if (cpuUsage>cpuThreshold){
-		double *type=0;
+	if (cpuUsage > cpuThreshold){
+		int type=0;
 		writeLog(type,&cpuUsage,&cpuThreshold,NULL,logfile);
 	}
 }		
@@ -148,15 +145,16 @@ void checkCpu(double cpuThreshold, char*logfile){
 
 void checkMem(double memThreshold, char*logfile){
 	double memUsage=getMemStat();
-	if (memUsage>*memThreshold){
-		double *type=2;
+	if (memUsage > memThreshold){
+		int type=1;
 		writeLog(type,&memUsage,&memThreshold,NULL,logfile);
 	}	
 }
 
-void checkSyn(int synThreshold, char*logfile){
-	int synRecv=getSynStat();
+void checkSyn(double synThreshold, char*logfile){
+	double synRecv =getSynStat();
 	if (synRecv > synThreshold){
+		int type= 2;
 		writeLog(type,&synRecv,&synThreshold,NULL,logfile);
 	}
 }

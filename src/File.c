@@ -67,7 +67,6 @@ void readConfigFile(double * pCPU, double * pMEM, double * pSYNN, char * pLogFil
     }
     else{
         char key[256], value[256];
-        int iVal;
         char * line = NULL;
         size_t len = 0;
         ssize_t read;
@@ -97,6 +96,9 @@ void readConfigFile(double * pCPU, double * pMEM, double * pSYNN, char * pLogFil
     
 }
 
+
+/*
+
 int main(){
     //WRITELOG
     int type = 6;
@@ -119,3 +121,4 @@ int main(){
     return 0;
 
 }
+*/
