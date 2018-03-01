@@ -5,22 +5,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "./include/stats.h"
- 
-int main(int argC,char* argV[]){
-	int count =0;
-	char * log="/home/ferllini13/Desktop/log";
-	checkCpu(20.0, log);
-	checkMem(20.0,log);
-	checkSyn(100,log);
-	getSyslogStat(&count,log);
-	return 0;
-/*int main(int argc, char *argv[]) {
-	openlog("Trackermon", LOG_PID, LOG_DAEMON);
-	while (1) {
-		syslog(LOG_NOTICE, "Prueba");
-		sleep(20);
-	}
-	closelog();
+#include "./include/File.h"
 
-	return EXIT_SUCCESS;*/
+int main(){
+	int count = 0;
+	double pCPU = 20;
+	double pMem = 20;
+	double pSYN = 20;
+	char * log = "/home/andres/Documents/test.log";
+	//char log[100];
+	
+	//readConfigFile(&pCPU, &pMem, &pSYN, log);
+
+	while (1) {
+		checkCpu(pCPU, log);
+		checkMem(pMem,log);
+		checkSyn(pSYN,log);
+		
+		getSyslogStat(&count,log);
+		sleep(2);
+	}
+	
+	return EXIT_SUCCESS;
 }

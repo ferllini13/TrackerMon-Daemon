@@ -14,7 +14,7 @@ stats.o: ./src/stats.c
 service.o: ./include/service.h ./src/service.c
 	$(CC) $(CFLAGS) ./src/service.c
 
-main.o: service.o
+main.o: service.o stats.o File.o
 	$(CC) $(CFLAGS) main.c
 
 File.o: 
