@@ -121,7 +121,9 @@ void getSyslogStat(int * criticalCount){
     		if (count >= *criticalCount){
     			//write log
     			printf("%s\n",line);
+    			criticalCount++;
     		}
+    		count++;
     		
     	}
     	fclose(file);// close file after read
