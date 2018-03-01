@@ -3,7 +3,7 @@
 #include <string.h>
 
 /**
- * @brief Method that write a log file
+ * @brief   Method that write a log file
  * @details This method writes in the log file the different kind of alert messages
  * 
  * @param pType         Recieve the type of alert 0=CPU 1=Memory 2=SYN 3=System
@@ -16,7 +16,8 @@ void writeLog(int pType, double * pCurrentInfo, double * pThreshold, char * pSys
     FILE * pFile = fopen(pLogFile, "a"); //a read the file and append the info
     if (pFile == NULL) //Verify if the file is open
     {
-            printf("Error opening file!\n");
+        fclose(pFile); // Close the file
+        printf("Error opening file!\n");
             
     }
     else
@@ -47,52 +48,54 @@ void writeLog(int pType, double * pCurrentInfo, double * pThreshold, char * pSys
 }
 
 /**
- * @brief setting global variables
+ * @brief Setting global variables
  */
 #define CONFIG_FILE_NAME "/etc/trackermon/config.conf"
 
 /**
- * @brief method that read a config file
- * @details this method read a config file and save it values into a struct
+ * @brief   Method that read the config file
+ * @details This method read the config file and save it values
  * 
- * @param pfilename name of the config file to read
+ * @param pCPU          Read the threshold from the CPU
+ * @param pMEM          Read the threshold from the Mem
+ * @param pSYN          Read the threshold from the SYN
+ * @param pLogFilePath  Read the Log File path
  */
-void readConfigFile(double * pCPU, double * pMEM, double * pSYNN, char * pLogFilePath){
-    FILE * fp;    
-
-    fp = fopen(CONFIG_FILE_NAME, "r");
-    if (fp == NULL){
-        fclose(fp); 
+void readConfigFile(double * pCPU, double * pMEM, double * pSYN, char * pLogFilePath){
+    FILE * pFile = fopen(CONFIG_FILE_NAME, "r"); //r read the file
+    if (pFile == NULL) //Verify if the file is open
+    { 
+        fclose(pFile); // Close the file
         exit(EXIT_FAILURE);
     }
-    else{
-        char key[256], value[256];
-        int iVal;
+    else
+    {
+        char key[256], value[256]; //Create the char variables to store the values
         char * line = NULL;
         size_t len = 0;
         ssize_t read;
 
-        while ((read = getline(&line, &len, fp)) != -1) {
-            if(line[0] == '#' || line[0] == '\n')
+        while ((read = getline(&line, &len, pFile)) != -1) {
+            if(line[0] == '#' || line[0] == '\n')       //Ignores the empty
                 continue;
             else{
-                sscanf(line, "%s = %s", key, value);
-                if(strcmp(key, "LOGFILE") == 0){       //Identify the LOGFILE path
-                    if(strcmp(value,"") == 0){
-                        strncpy(pLogFilePath,"/var/log/messages", 255);
+                sscanf(line, "%s = %s", key, value);    //Search for a "=" in the configuration file
+                if(strcmp(key, "LOGFILE") == 0){        //Identify the LOGFILE path in the configuration file
+                    if(strcmp(value,"") == 0){          //If the LOGFILE path is empty
+                        strncpy(pLogFilePath,"/var/log/messages", 255); //Set the LOGFILE path as "/var/log/messages"
                     } else {
-                        strncpy(pLogFilePath,value, 255);                    
+                        strncpy(pLogFilePath,value, 255);   //Set the LOGFILE path as the one in the configuration file
                     }
                 } else if(strcmp(key, "CPUthreshold") == 0){  //Read the CPUthreshold
                     sscanf(value, "%lf", &(*pCPU));
                 } else if(strcmp(key, "MEMthreshold") == 0){  //Read the Memthreshold
                     sscanf(value, "%lf", &(*pMEM));
                 } else if(strcmp(key, "SYNthreshold") == 0){  //Read the SYNthreshold
-                    sscanf(value, "%lf", &(*pSYNN));
+                    sscanf(value, "%lf", &(*pSYN));
                 }
             }
         }
-        fclose(fp);    
+        fclose(pFile); // Close the file  
     }
     
 }
@@ -117,5 +120,4 @@ int main(){
     printf("%f\n", MEM_TRESHOLD);
     printf("%f\n", SYNNCONN_TRESHOLD);           
     return 0;
-
 }
