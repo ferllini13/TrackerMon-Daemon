@@ -1,3 +1,9 @@
+#include <syslog.h>
+#include <unistd.h>
+#include <getopt.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "./include/stats.h"
  
 int main(int argC,char* argV[]){
@@ -8,4 +14,13 @@ int main(int argC,char* argV[]){
 	checkSyn(100,log);
 	getSyslogStat(&count,log);
 	return 0;
+/*int main(int argc, char *argv[]) {
+	openlog("Trackermon", LOG_PID, LOG_DAEMON);
+	while (1) {
+		syslog(LOG_NOTICE, "Prueba");
+		sleep(20);
+	}
+	closelog();
+
+	return EXIT_SUCCESS;*/
 }

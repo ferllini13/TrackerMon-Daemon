@@ -1,0 +1,10 @@
+[Unit]
+Description=Trackermon test
+
+[Service]
+Type=simple
+User=root
+ExecStart=/home/andres/Documents/Operativos/Tarea1/bin/trackermon
+
+[Install]
+WantedBy=multi-user.target
