@@ -118,7 +118,7 @@ void getSyslogStat(int * criticalCount){
     	int count=0;    		
     	char line[500];// will load a line of tmd
     	while(fgets(line, sizeof(line), file)!=NULL){ // run while the line is not null
-    		if (count >= *criticalCount){
+    		if (count >= * criticalCount){
     			//write log
     			printf("%s\n",line);
     			criticalCount++;
