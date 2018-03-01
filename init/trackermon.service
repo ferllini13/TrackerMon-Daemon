@@ -1,0 +1,10 @@
+[Unit]
+Description=Trackermon test
+
+[Service]
+Type=forking
+ExecStart=/home/andres/Documents/Operativos/Tarea1/bin/trackermon --pid_file /home/andres/Documents/trackermon.pid --daemon
+PIDFile=/home/andres/Documents/trackermon.pid
+
+[Install]
+WantedBy=multi-user.target

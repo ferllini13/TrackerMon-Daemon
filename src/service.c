@@ -6,10 +6,13 @@
 #include <signal.h>    // Handlers for signals reported during execution.
 #include <syslog.h>    // Definitions for system error logging.
 #include <errno.h>     // Macros for reporting and retrieving error conditions.
+#include <fcntl.h>     // Open syscall for recording PID.
 #include <string.h>
 
-void daemonize() {
+void daemonize(char * pid_file) {
+    printf("Inicializando Trackermon...\n");
     pid_t pid; // Process ID and Session ID.
+    int pid_fd = -1;
 
     // First fork: Child runs in the background, parent gets terminated.
     pid = fork(); // Creates a child process.
@@ -44,5 +47,34 @@ void daemonize() {
         close(x);
     }
 
-    openlog ("Trackermon", LOG_PID, LOG_DAEMON);
+    // Reopen stdin (fd = 0), stdout (fd = 1), stderr (fd = 2) 
+	stdin = fopen("/dev/null", "r");
+	stdout = fopen("/dev/null", "w+");
+    stderr = fopen("/dev/null", "w+");
+
+    char buffer[256];
+    printf(pid_file, "\n");
+    pid_fd = open(pid_file, O_RDWR|O_CREAT, 0640);
+    if (pid_fd < 0) {
+        printf("No pudo abrir PID.\n");
+        // Can't open PID file.
+        exit(EXIT_FAILURE);
+    }
+    if (lockf(pid_fd, F_TLOCK, 0) < 0) {
+        printf("No pudo cerrar PID\n");
+        // Can't lock PID file
+        exit(EXIT_FAILURE);
+    }
+    // Get current PID:
+    sprintf(buffer, "%d\n", getpid());
+    // Write current PID to PID File:
+    write(pid_fd, buffer, strlen(buffer));
+
+    //openlog ("Trackermon", LOG_PID, LOG_DAEMON); // For debugging purposes.
 } 
+
+void handleSignal(int sig) {
+    if (sig == SIGINT) {
+
+    }
+}
