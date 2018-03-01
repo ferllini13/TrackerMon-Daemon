@@ -5,9 +5,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "./include/stats.h"
-#include "./include/service.h"
-
-int main(int argc, char *argv[]) {
+ 
+int main(int argC,char* argV[]){
+	int count =0;
+	char * log="/home/ferllini13/Desktop/log";
+	checkCpu(20.0, log);
+	checkMem(20.0,log);
+	checkSyn(100,log);
+	getSyslogStat(&count,log);
+	return 0;
+/*int main(int argc, char *argv[]) {
 	openlog("Trackermon", LOG_PID, LOG_DAEMON);
 	while (1) {
 		syslog(LOG_NOTICE, "Prueba");
@@ -15,5 +22,5 @@ int main(int argc, char *argv[]) {
 	}
 	closelog();
 
-	return EXIT_SUCCESS;
+	return EXIT_SUCCESS;*/
 }

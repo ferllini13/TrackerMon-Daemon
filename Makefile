@@ -1,8 +1,8 @@
 CC = gcc
 CFLAGS = -Wall -c
 LFLAGS = -Wall
-OBJS = main.o service.o stats.o
 
+OBJS = main.o service.o stats.o File.o
 
 trackermon: $(OBJS)
 	$(CC) $(LFLAGS) $(OBJS) -o ./bin/trackermon
@@ -17,5 +17,8 @@ service.o: ./include/service.h ./src/service.c
 main.o: service.o
 	$(CC) $(CFLAGS) main.c
 
+File.o: 
+	$(CC) $(CFLAGS) ./src/File.c
+
 clean:
-	rm ./bin/trackermon
+	rm -f ./bin/trackermon
