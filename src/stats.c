@@ -86,7 +86,7 @@ double getMemStat(){
 // return the number of SYN_RECV
 int getSynStat(){
 
-   system("netstat -tuna | grep -c SYN_SENT > /home/ferllini13/tmd"); // call a system comanand and meke a log with number of syn_recv
+   system("netstat -tuna | grep -c SYN_RECV > /home/ferllini13/tmd"); // call a system comanand and meke a log with number of syn_recv
 	
    	FILE *file = fopen ("/home/ferllini13/tmd", "r");//open the file with syn information
 

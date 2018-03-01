@@ -11,7 +11,7 @@ trackermon: $(OBJS)
 stats.o: 
 	$(CC) $(CFLAGS) ./src/stats.c 
 
-main.o: ./include/stats.h ./src/stats.c
+main.o: stats.o 
 	$(CC) $(CFLAGS) main.c
 
 clean:
