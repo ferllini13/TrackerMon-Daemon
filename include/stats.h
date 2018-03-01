@@ -4,5 +4,9 @@
 double getCPUStat();
 double getMemStat();
 int getSynStat();
+void getSyslogStat(int * criticalCount);
 
+void checkCpu();
+void checkMem();
+void checkSyn();
 #endif

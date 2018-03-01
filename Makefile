@@ -15,4 +15,4 @@ main.o: stats.o
 	$(CC) $(CFLAGS) main.c
 
 clean:
-	rm ./bin/trackermon
+	rm -f ./bin/trackermon

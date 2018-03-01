@@ -2,7 +2,6 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <sys/types.h>
 
 //return CPU usage
 double getCPUStat(){
@@ -85,12 +84,10 @@ double getMemStat(){
 
 // return the number of SYN_RECV
 int getSynStat(){
-
-   system("netstat -tuna | grep -c SYN_RECV > /home/ferllini13/tmd"); // call a system comanand and meke a log with number of syn_recv
 	
-   	FILE *file = fopen ("/home/ferllini13/tmd", "r");//open the file with syn information
+   	FILE *file = popen ("netstat -tuna | grep -c SYN_RECV", "r");//load  the command output with syn information
 
-    if (file == NULL){// if file cant be opened
+    if (!file){// if file cant be opened
     	printf("Error: can't open file\n");// print error
     	fclose(file);// close file
     	return -1;// return error
@@ -107,3 +104,54 @@ int getSynStat(){
   	} 
 }
 
+
+//gest the critical messages from syslog
+void getSyslogStat(int * criticalCount){
+	FILE *file = popen ("cat /var/log/syslog | grep CRITICAL", "r");//load  the command output with syn information
+
+    if (file==NULL){// if file cant be opened
+    	printf("Error: can't open file\n");// print error
+    	fclose(file);// close file
+    	//return -1;// return error
+    }
+    else{
+    	int count=0;    		
+    	char line[500];// will load a line of tmd
+    	while(fgets(line, sizeof(line), file)!=NULL){ // run while the line is not null
+    		if (count >= *criticalCount){
+    			//write log
+    			printf("%s\n",line);
+    		}
+    		
+    	}
+    	fclose(file);// close file after read
+
+	}
+}
+
+
+
+
+
+void checkCpu(double cpuThreshold){
+	double cpuUsage=getCPUStat();
+
+	if (cpuUsage>cpuThreshold){
+		// wtrite log
+	}
+}		
+
+
+void checkMem(double memThreshold){
+	double memUsage=getMemStat();
+	if (memUsage>memThreshold){
+		//wtrite log
+	}	
+}
+
+void checkSyn(int synThreshold){
+	int synRecv=getSynStat();
+	if (synRecv>synThreshold){
+		//wtrite logc
+	}
+}
