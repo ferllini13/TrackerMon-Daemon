@@ -55,6 +55,8 @@ void writeLog(int pType, double * pCurrentInfo, double * pThreshold, char * pSys
 /**
  * @brief   Method that read the config file
  * @details This method read the config file and save it values
+ *
+ * reference: https://www.pacificsimplicity.ca/blog/simple-read-configuration-file-struct-example = link that helps to resolve the problem
  * 
  * @param pCPU          Read the threshold from the CPU
  * @param pMEM          Read the threshold from the Mem
