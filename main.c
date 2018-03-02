@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+//#include <syslog.h>
 #include "./include/stats.h"
 #include "./include/File.h"
 
@@ -12,10 +13,9 @@ int main(){
 	double pCPU = 20;
 	double pMem = 20;
 	double pSYN = 20;
-	char * log = "/home/andres/Documents/test.log";
-	//char log[100];
+	char log[100];
 	
-	//readConfigFile(&pCPU, &pMem, &pSYN, log);
+	readConfigFile(&pCPU, &pMem, &pSYN, (char*)log);
 
 	while (1) {
 		checkCpu(pCPU, log);
@@ -23,7 +23,7 @@ int main(){
 		checkSyn(pSYN,log);
 		
 		getSyslogStat(&count,log);
-		sleep(2);
+		sleep(1);
 	}
 	
 	return EXIT_SUCCESS;

@@ -16,7 +16,7 @@ void writeLog(int pType, double * pCurrentInfo, double * pThreshold, char * pSys
     FILE * pFile = fopen(pLogFile, "a"); //a read the file and append the info
     if (pFile == NULL) //Verify if the file is open
     {
-            printf("Error opening file!\n");
+            printf("Error opening file! %s", pLogFile);
             
     }
     else
