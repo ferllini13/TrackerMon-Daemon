@@ -4,7 +4,11 @@ Description=Trackermon test
 [Service]
 Type=simple
 User=root
+<<<<<<< HEAD
 ExecStart=/etc/trackermon/trackermon
+=======
+ExecStart=/home/ferllini13/Desktop/Operativos/short1/TrackerMon-Daemon/bin/trackermon
+>>>>>>> d381b9621687d3a5ce36ba246987ee0867d51138
 
 [Install]
 WantedBy=multi-user.target
