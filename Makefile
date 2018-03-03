@@ -33,4 +33,4 @@ install:
 	chmod 777 /var/log/trackermon.log
 	chmod 777 /var/log/messages
 	chmod 777 /etc/trackermon/config.conf
-	chmod 664 /etc/systemd/system/trackermon
+	chmod 664 /etc/systemd/system/trackermon.service
