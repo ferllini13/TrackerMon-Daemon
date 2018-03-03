@@ -107,7 +107,7 @@ double getSynStat(){
 
 
 //gest the critical messages from syslog
-void getSyslogStat(int * criticalCount , char* logfile){
+void getSyslogStat(char* logfile){
 	FILE *file = popen ("cat /var/log/syslog | grep CRITICAL", "r");//load  the command output with syn information
 
     if (file==NULL){// if file cant be opened
@@ -117,25 +117,23 @@ void getSyslogStat(int * criticalCount , char* logfile){
     }
     else{		
     	char line[500];// will load a line of tmd
-    	char line2[500];
     	while(fgets(line, sizeof(line), file)!=NULL){ // run while the line is not null
-    		if (criticalCount==0){
-    			int type=3;
-    			writeLog(type,NULL,NULL,(char*)line,logfile);
-    			printf("%s\n",line);
-    			(*criticalCount)++;
-    		}
-    		if(fgets(line2, sizeof(line), file)!=NULL){
-    			int type=3;
-    			writeLog(type,NULL,NULL,(char*)line,logfile);
-    		}
-    		
+    		int type=3;
+    		writeLog(type,NULL,NULL,(char*)line,logfile);
+    		printf("%s\n",line);
     	}
     	fclose(file);// close file after read
 	}
 }
 
 
+void checkSyn(double synThreshold, char* logfile){
+		double synRecv =getSynStat();
+	if (synRecv > synThreshold){
+		int type= 2;
+		writeLog(type,&synRecv,&synThreshold,NULL,logfile);
+	}
+}
 
 void checkCpu(double cpuThreshold, char*logfile){
 	double cpuUsage=getCPUStat();
@@ -155,11 +153,3 @@ void checkMem(double memThreshold, char*logfile){
 	}	
 }
 
-void checkSyn(double synThreshold, char* logfile){
-	printf("mierda%s", logfile);
-	double synRecv =getSynStat();
-	if (synRecv > synThreshold){
-		int type= 2;
-		writeLog(type,&synRecv,&synThreshold,NULL,logfile);
-	}
-}

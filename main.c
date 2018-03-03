@@ -9,7 +9,6 @@
 
  
 int main(){
-	int count = 0;
 	double pCPU;
 	double pMem;
 	double pSYN;
@@ -23,7 +22,7 @@ int main(){
 
  		checkMem(pMem,log);
  		checkSyn(pSYN,log);
- 		getSyslogStat(&count,log);
+ 		getSyslogStat(log);
  		sleep(5);
  	}
  	
