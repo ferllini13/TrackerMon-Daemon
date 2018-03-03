@@ -26,11 +26,11 @@ clean:
 install:
 	mkdir -p /etc/trackermon
 	mv ./bin/trackermon /etc/trackermon
-	cp ./init/trackermon.service /usr/lib/systemd/system
+	cp ./init/trackermon.service /etc/systemd/system
 	cp config.conf /etc/trackermon/
 	touch /var/log/trackermon.log
 	touch /var/log/messages
 	chmod 777 /var/log/trackermon.log
 	chmod 777 /var/log/messages
 	chmod 777 /etc/trackermon/config.conf
-	chmod 664 /usr/lib/systemd/system/trackermon
+	chmod 664 /etc/systemd/system/trackermon
