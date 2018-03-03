@@ -32,7 +32,7 @@ void writeLog(int pType, double * pCurrentInfo, double * pThreshold, char * pSys
                 fprintf(pFile, "[CRITICAL] – Memory Usage is currently %f which is over %f\n", *pCurrentInfo, *pThreshold); // Write the alert message in the log file
                 fclose(pFile); // Close the file
                 break;
-        
+
             case 2  : //SYN
                 fprintf(pFile, "[CRITICAL] – SYN flood connections detected. Currently there are %f active SYN_RECV connections which is over the defined limit %f\n", *pCurrentInfo, *pThreshold); // Write the alert message in the log file
                 fclose(pFile); // Close the file

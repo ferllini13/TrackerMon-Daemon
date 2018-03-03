@@ -7,24 +7,25 @@
 #include "./include/stats.h"
 #include "./include/File.h"
 
+ 
 int main(){
 	int count = 0;
-	double pCPU = 20;
-	double pMem = 20;
-	double pSYN = 20;
-	char * log = "/home/andres/Documents/test.log";
-	//char log[100];
-	
-	//readConfigFile(&pCPU, &pMem, &pSYN, log);
+	double pCPU;
+	double pMem;
+	double pSYN;
+	char * log;
 
-	while (1) {
-		checkCpu(pCPU, log);
-		checkMem(pMem,log);
-		checkSyn(pSYN,log);
-		
-		getSyslogStat(&count,log);
-		sleep(2);
-	}
-	
-	return EXIT_SUCCESS;
+ 	readConfigFile(&pCPU,&pMem, &pSYN,log);
+ 	printf("%s\n",log);
+
+ 	while (1) {
+ 		checkCpu(pCPU, log);
+
+ 		checkMem(pMem,log);
+ 		checkSyn(pSYN,log);
+ 		getSyslogStat(&count,log);
+ 		sleep(5);
+ 	}
+ 	
+ 	return EXIT_SUCCESS;
 }
