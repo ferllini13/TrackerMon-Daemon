@@ -27,7 +27,7 @@ install:
 	mkdir /etc/trackermon
 	mv ./bin/trackermon /etc/trackermon
 	cp ./init/trackermon.service /usr/lib/systemd/system
-	touch /etc/trackermon/config.conf
+	cp config.conf /etc/trackermon/
 	touch /var/log/trackermon.log
 	touch /var/log/messages
 	chmod 777 /var/log/trackermon.log
