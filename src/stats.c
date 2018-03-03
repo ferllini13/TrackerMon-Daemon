@@ -115,17 +115,22 @@ void getSyslogStat(int * criticalCount , char* logfile){
     	fclose(file);// close file
     	//return -1;// return error
     }
-    else{
-    	int count=0;    		
+    else{ 		
     	char line[500];// will load a line of tmd
+    	char line2[500];
     	while(fgets(line, sizeof(line), file)!=NULL){ // run while the line is not null
-    		if (count >= * criticalCount){
+    		if (*criticalCount==0){
     			int type=3;
     			writeLog(type,NULL,NULL,(char*)line,logfile);
     			printf("%s\n",line);
-    			criticalCount++;
+    			*criticalCount=*criticalCount+1;
     		}
-    		count++;
+    		else{	
+    			if(fgets(line2, sizeof(line), file)==NULL){
+    				int type=3;
+    				writeLog(type,NULL,NULL,(char*)line,logfile);
+				}
+    		}
     	}
     	fclose(file);// close file after read
 	}
@@ -133,8 +138,7 @@ void getSyslogStat(int * criticalCount , char* logfile){
 
 
 
-void checkCpu(double cpuThreshold, char*logfile){
-	double cpuUsage=getCPUStat();
+void checkCpu(double cpuThreshold, char*logfile){	double cpuUsage=getCPUStat();
 
 	if (cpuUsage > cpuThreshold){
 		int type=0;

@@ -9,10 +9,10 @@
 #include "./include/File.h"
 
 int main(){
-	int count = 0;
-	double pCPU = 20;
-	double pMem = 20;
-	double pSYN = 20;
+	int count;
+	double pCPU;
+	double pMem;
+	double pSYN;
 	char log[100];
 	
 	readConfigFile(&pCPU, &pMem, &pSYN, (char*)log);
