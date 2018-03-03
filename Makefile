@@ -24,7 +24,7 @@ clean:
 	rm -f ./bin/trackermon
 
 install:
-	mkdir /etc/trackermon
+	mkdir -p /etc/trackermon
 	mv ./bin/trackermon /etc/trackermon
 	cp ./init/trackermon.service /usr/lib/systemd/system
 	cp config.conf /etc/trackermon/
