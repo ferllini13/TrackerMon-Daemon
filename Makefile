@@ -22,3 +22,15 @@ File.o:
 
 clean:
 	rm -f ./bin/trackermon
+
+install:
+	mkdir /etc/trackermon
+	mv ./bin/trackermon /etc/trackermon
+	cp ./init/trackermon.service /usr/lib/systemd/system
+	touch /etc/trackermon/config.conf
+	touch /var/log/trackermon.log
+	touch /var/log/messages
+	chmod 777 /var/log/trackermon.log
+	chmod 777 /var/log/messages
+	chmod 777 /etc/trackermon/config.conf
+	chmod 664 /usr/lib/systemd/system/trackermon
